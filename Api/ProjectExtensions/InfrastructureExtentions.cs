@@ -30,6 +30,9 @@ namespace Api.ProjectExtensions
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<ICourseService, CourseService>();
             return services;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Core.Application.Dtos.Requests.Shared;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Application.Dtos.Requests
 {
@@ -14,5 +15,18 @@ namespace Core.Application.Dtos.Requests
         [Required]
         public Guid DepartmentId { get; set; }
         public Guid LevelId { get; set; }
+    }
+
+    public class ListStudentRequest : RequestParams
+    {
+
+    }
+
+    public class EnrollStudentRequest
+    {
+        [Required]
+        public Guid StudentId { get; set; }
+        [Required]
+        public List<Guid> CourseIds { get; set; }
     }
 }

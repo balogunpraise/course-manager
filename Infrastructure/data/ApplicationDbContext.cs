@@ -15,6 +15,9 @@ namespace Infrastructure.data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Enrollment>()
+                .HasIndex(x => x.StudentId);
         }
 
         public DbSet<Course> Courses { get; set; }
@@ -28,6 +31,7 @@ namespace Infrastructure.data
         public DbSet<Transcript> Transcripts { get; set; }
         public DbSet<Waitlist> Waitlists { get; set; }
         public DbSet<Level> Levels { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
 
     }
 }

@@ -9,7 +9,7 @@ namespace Core.Domain.Entities
         public Guid CourseSectionId { get; set; }
         public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
         public DateTime? DroppedAt { get; set; }
-        public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Enrolled;
+        public EnrollmentStatus EnrollmentStatus { get; set; } = EnrollmentStatus.Enrolled;
 
         // Navigation
         [ForeignKey(nameof(StudentId))]
@@ -19,5 +19,8 @@ namespace Core.Domain.Entities
         public Guid? GradeId { get; set; }
         [ForeignKey(nameof(GradeId))]
         public Grade Grade { get; set; } = null!;
+        public Guid CourseId { get; set; }
+        [ForeignKey(nameof(CourseId))]
+        public Course Course { get; set; }
     }
 }
