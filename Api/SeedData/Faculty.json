@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "a1b2c3d4-0001-0000-0000-000000000001",
+    "Name": "Faculty of Engineering",
+    "Description": "Covers disciplines in civil, mechanical, electrical, and computer engineering.",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "a1b2c3d4-0002-0000-0000-000000000002",
+    "Name": "Faculty of Science",
+    "Description": "Covers natural and applied sciences including physics, chemistry, and biology.",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "a1b2c3d4-0003-0000-0000-000000000003",
+    "Name": "Faculty of Arts and Humanities",
+    "Description": "Covers literature, philosophy, history, linguistics, and fine arts.",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "a1b2c3d4-0004-0000-0000-000000000004",
+    "Name": "Faculty of Social Sciences",
+    "Description": "Covers sociology, psychology, political science, and economics.",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "a1b2c3d4-0005-0000-0000-000000000005",
+    "Name": "Faculty of Medicine and Health Sciences",
+    "Description": "Covers medicine, nursing, pharmacy, and public health.",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  }
+]

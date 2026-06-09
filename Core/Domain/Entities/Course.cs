@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Core.Domain.Entities.LinkingEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Core.Domain.Entities
 {
@@ -11,13 +9,14 @@ namespace Core.Domain.Entities
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int CreditHours { get; set; }
-        public Guid DepartmentId { get; set; }
+        public bool IsGeneralStudies { get; set; }
+        public Guid? FacultyId { get; set; }
+        [ForeignKey("FacultyId")]
+        public Faculty Faculty { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
-
-        // Navigation
-        public ICollection<CourseSection> Sections { get; set; } = new List<CourseSection>();
-        public ICollection<Prerequisite> Prerequisites { get; set; } = new List<Prerequisite>();
+        public List<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
     }
 }

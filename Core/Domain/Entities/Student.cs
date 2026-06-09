@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Entities.Auth;
+using Core.Domain.Entities.LinkingEntities;
 using Core.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +20,6 @@ namespace Core.Domain.Entities
         public Guid LevelId { get; set; }
 
         // Navigation
-        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
         public ICollection<Transcript> Transcripts { get; set; } = new List<Transcript>();
         public ICollection<Waitlist> WaitlistEntries { get; set; } = new List<Waitlist>();
         public Guid UserId { get; set; }
@@ -29,6 +29,7 @@ namespace Core.Domain.Entities
         public Department Department { get; set; }
         [ForeignKey(nameof(LevelId))]
         public Level Level { get; set; }
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
     }
 
 }

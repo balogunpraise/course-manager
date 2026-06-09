@@ -10,6 +10,5 @@
 
         // Navigation
         public Student Student { get; set; } = null!;
-        public CourseSection CourseSection { get; set; } = null!;
     }
 }

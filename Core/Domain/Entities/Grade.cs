@@ -9,7 +9,5 @@ namespace Core.Domain.Entities
         public string LetterGrade { get; set; } = string.Empty; 
         public DateTime GradedAt { get; set; }
         public string Remarks { get; set; }
-        [ForeignKey(nameof(EnrollmentId))]
-        public Enrollment Enrollment { get; set; } = null!;
     }
 }

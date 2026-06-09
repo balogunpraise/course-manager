@@ -22,16 +22,13 @@ namespace Infrastructure.Services
         }
         public async Task<string> GenerateJwtToken(AppUser user)
         {
-            // Implement JWT token generation logic here
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName!),
-                // Add additional claims as needed
             };
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-            // This typically involves creating claims, signing the token, and returning it as a string
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var tokenDescriptor = new SecurityTokenDescriptor

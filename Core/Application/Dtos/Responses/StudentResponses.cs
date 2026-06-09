@@ -40,7 +40,6 @@ namespace Core.Application.Dtos.Responses
         public decimal GPA { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid LevelId { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
         public ICollection<Transcript> Transcripts { get; set; } = new List<Transcript>();
         public ICollection<Waitlist> WaitlistEntries { get; set; } = new List<Waitlist>();
         public Guid UserId { get; set; }

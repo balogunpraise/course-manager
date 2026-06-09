@@ -2,6 +2,7 @@
 using Core.Application.Dtos.Responses;
 using Core.Application.Interfaces.ServicesAbstractions;
 using Core.Domain.Entities;
+using Core.Domain.Entities.LinkingEntities;
 using Core.Domain.Enums;
 using Infrastructure.data;
 using Microsoft.EntityFrameworkCore;
@@ -74,8 +75,6 @@ namespace Infrastructure.Services
 
             var students = query
                 .OrderBy(x => x.FirstName)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
                 .Select(s => new ListStudentResponses
                 {
                     Id = s.Id,
@@ -95,7 +94,7 @@ namespace Infrastructure.Services
                 });
 
             var pagedStudents = await PagedList<ListStudentResponses>
-                .ToPagedListAsync(students, request.PageNumber, request.PageSize, count);
+                .ToPagedListAsync(students, request.PageSize, request.PageNumber, count);
 
             return BaseResponse<PagedList<ListStudentResponses>>
                 .Success(200, "Students retrieved successfully", pagedStudents);
@@ -105,7 +104,6 @@ namespace Infrastructure.Services
         public async Task<BaseResponse<GetStudentDetailsResponse>> GetStudentByIdAsync(Guid studentId)
         {
             var student = await _context.Students
-                .Include(s => s.Enrollments)
                 .Include(s => s.Transcripts)
                 .Include(s => s.WaitlistEntries)
                 .Where(x => x.Id == studentId && !x.IsDeleted)
@@ -125,7 +123,6 @@ namespace Infrastructure.Services
                     Level = s.Level.LevelName,
                     DepartmentId = s.DepartmentId,
                     LevelId = s.LevelId,
-                    Enrollments = s.Enrollments,
                     Transcripts = s.Transcripts,
                     WaitlistEntries = s.WaitlistEntries,
                 })
@@ -164,15 +161,11 @@ namespace Infrastructure.Services
             if (courses.Count != request.CourseIds.Count) return BaseResponse.Failure(404, "One or more courses not found");
             foreach (var course in courses)
             {
-                //if (course.Capacity <= course.Enrollments.Count)
-                //{
-                //    return BaseResponse.Failure(400, $"Course {course.CourseCode} is full");
-                //}
-                if (student.Enrollments.Any(e => e.CourseId == course.Id))
+                if (student.StudentCourses.Any(e => e.CourseId == course.Id))
                 {
                     return BaseResponse.Failure(400, $"Student is already enrolled in course {course.CourseCode}");
                 }
-                student.Enrollments.Add(new Enrollment
+                student.StudentCourses.Add(new StudentCourse
                 {
                     CourseId = course.Id,
                     StudentId = request.StudentId,
@@ -185,10 +178,9 @@ namespace Infrastructure.Services
         }
         public async Task<BaseResponse> DropCourse(Guid studentId, Guid courseId)
         {
-            var enrollment = await _context.Enrollments
-                .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId && e.DroppedAt == null);
+            var enrollment = await _context.StudentCourses
+                .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId && e.EnrollmentStatus == EnrollmentStatus.Enrolled);
             if (enrollment == null) return BaseResponse.Failure(404, "Enrollment not found");
-            enrollment.DroppedAt = DateTime.UtcNow;
             enrollment.EnrollmentStatus = EnrollmentStatus.Dropped;
             await _context.SaveChangesAsync();
             return BaseResponse.Success(200, "Course dropped successfully");

@@ -14,9 +14,5 @@ namespace Core.Application.Dtos.Responses
 
         [ForeignKey(nameof(DepartmentId))]
         public Department Department { get; set; }
-
-        // Navigation
-        public ICollection<CourseSection> Sections { get; set; } = new List<CourseSection>();
-        public ICollection<Prerequisite> Prerequisites { get; set; } = new List<Prerequisite>();
     }
 }

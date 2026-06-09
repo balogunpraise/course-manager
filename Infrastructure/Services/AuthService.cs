@@ -55,18 +55,19 @@ namespace Infrastructure.Services
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                return BaseResponse<LogingResponse>.Failure(404, "User not found");
+                return BaseResponse<LogingResponse>.Failure(404, "Invalid Credentials");
             }
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!isPasswordValid)
             {
-                return BaseResponse<LogingResponse>.Failure(400, "Invalid password");
+                return BaseResponse<LogingResponse>.Failure(400, "Invalid Credentials");
             }
             var token = await _tokenService.GenerateJwtToken(user);
             var response = new LogingResponse
             {
                 UserId = user.Id,
-                Token = token
+                Token = token,
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? ""
             };
             return BaseResponse<LogingResponse>.Success(200, "User logged in successfully", response);
         }

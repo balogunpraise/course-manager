@@ -29,4 +29,10 @@ namespace Core.Application.Dtos.Requests
         [Required]
         public List<Guid> CourseIds { get; set; }
     }
+
+    public class SelfEnrollCourseRequest
+    {
+        [Required]
+        public List<Guid> CourseIds { get; set; }
+    }
 }

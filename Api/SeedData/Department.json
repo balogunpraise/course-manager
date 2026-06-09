@@ -1,0 +1,110 @@
+[
+  {
+    "Id": "b1c2d3e4-0001-0000-0000-000000000001",
+    "Name": "Civil Engineering",
+    "Description": "Focuses on the design and construction of infrastructure such as roads, bridges, and buildings.",
+    "FacultyId": "a1b2c3d4-0001-0000-0000-000000000001",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0002-0000-0000-000000000002",
+    "Name": "Computer Engineering",
+    "Description": "Combines electrical engineering and computer science to develop hardware and software systems.",
+    "FacultyId": "a1b2c3d4-0001-0000-0000-000000000001",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0003-0000-0000-000000000003",
+    "Name": "Mechanical Engineering",
+    "Description": "Focuses on the design, analysis, and manufacturing of mechanical systems.",
+    "FacultyId": "a1b2c3d4-0001-0000-0000-000000000001",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0004-0000-0000-000000000004",
+    "Name": "Physics",
+    "Description": "Studies matter, energy, and the fundamental forces of nature.",
+    "FacultyId": "a1b2c3d4-0002-0000-0000-000000000002",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0005-0000-0000-000000000005",
+    "Name": "Chemistry",
+    "Description": "Explores the composition, structure, and properties of matter and chemical reactions.",
+    "FacultyId": "a1b2c3d4-0002-0000-0000-000000000002",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0006-0000-0000-000000000006",
+    "Name": "Biology",
+    "Description": "Studies living organisms, their structure, function, growth, and evolution.",
+    "FacultyId": "a1b2c3d4-0002-0000-0000-000000000002",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0007-0000-0000-000000000007",
+    "Name": "English and Literature",
+    "Description": "Covers the study of English language, literary theory, and creative writing.",
+    "FacultyId": "a1b2c3d4-0003-0000-0000-000000000003",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0008-0000-0000-000000000008",
+    "Name": "History and Philosophy",
+    "Description": "Examines historical events, philosophical thought, and their impact on modern society.",
+    "FacultyId": "a1b2c3d4-0003-0000-0000-000000000003",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0009-0000-0000-000000000009",
+    "Name": "Psychology",
+    "Description": "Studies human behavior, mental processes, and emotional development.",
+    "FacultyId": "a1b2c3d4-0004-0000-0000-000000000004",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0010-0000-0000-000000000010",
+    "Name": "Economics",
+    "Description": "Analyzes production, distribution, and consumption of goods and services.",
+    "FacultyId": "a1b2c3d4-0004-0000-0000-000000000004",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0011-0000-0000-000000000011",
+    "Name": "Medicine",
+    "Description": "Trains students in diagnosing, treating, and preventing human diseases.",
+    "FacultyId": "a1b2c3d4-0005-0000-0000-000000000005",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b1c2d3e4-0012-0000-0000-000000000012",
+    "Name": "Pharmacy",
+    "Description": "Covers the science of preparing and dispensing medications and drug interactions.",
+    "FacultyId": "a1b2c3d4-0005-0000-0000-000000000005",
+    "CreatedAt": "2024-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  }
+]

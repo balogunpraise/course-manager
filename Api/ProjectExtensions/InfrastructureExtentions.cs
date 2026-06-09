@@ -33,6 +33,8 @@ namespace Api.ProjectExtensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<ILevelService, LevelService>();
             return services;
         }
 

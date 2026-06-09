@@ -34,8 +34,6 @@ namespace Infrastructure.Services
         {
             var course = await _context.Courses
                 .Include(c => c.Department)
-                .Include(c => c.Sections)
-                .Include(c => c.Prerequisites)
                 .FirstOrDefaultAsync(c => c.Id == courseId);
             if (course == null) return BaseResponse<GetCourseResponse>.Failure(404, "Course not found");
             var response = new GetCourseResponse
@@ -45,10 +43,8 @@ namespace Infrastructure.Services
                 Title = course.Title,
                 Description = course.Description,
                 CreditHours = course.CreditHours,
-                DepartmentId = course.DepartmentId,
+                DepartmentId = course.DepartmentId.GetValueOrDefault(),
                 Department = course.Department,
-                Sections = course.Sections,
-                Prerequisites = course.Prerequisites
             };
             return BaseResponse<GetCourseResponse>.Success(200, "Course retrieved successfully", response);
         }
@@ -86,8 +82,6 @@ namespace Infrastructure.Services
         {
             var query = _context.Courses
                 .Include(c => c.Department)
-                .Include(c => c.Sections)
-                .Include(c => c.Prerequisites)
                 .Where(c => !c.IsDeleted)
                 .AsQueryable();
             if(!string.IsNullOrWhiteSpace(request.SearchTerm))
@@ -106,10 +100,8 @@ namespace Infrastructure.Services
                 Title = course.Title,
                 Description = course.Description,
                 CreditHours = course.CreditHours,
-                DepartmentId = course.DepartmentId,
+                DepartmentId = course.DepartmentId.GetValueOrDefault(),
                 Department = course.Department,
-                Sections = course.Sections,
-                Prerequisites = course.Prerequisites
             }).ToList();
             return BaseResponse<PagedList<GetCourseResponse>>.Success(200, "Courses retrieved successfully", PagedList<GetCourseResponse>.ToPagedList(response, request.PageSize, request.PageNumber, totalCount));
         }

@@ -1,0 +1,58 @@
+[
+  {
+    "Id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "LevelName": "Pre-100 Level",
+    "LevelCode": "PRE-100L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "LevelName": "100 Level",
+    "LevelCode": "100L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "LevelName": "200 Level",
+    "LevelCode": "200L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "d4e5f6a7-b8c9-0123-defa-234567890123",
+    "LevelName": "300 Level",
+    "LevelCode": "300L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "e5f6a7b8-c9d0-1234-efab-345678901234",
+    "LevelName": "400 Level",
+    "LevelCode": "400L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+    "LevelName": "500 Level",
+    "LevelCode": "500L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  },
+  {
+    "Id": "a7b8c9d0-e1f2-3456-abcd-567890123456",
+    "LevelName": "600 Level",
+    "LevelCode": "600L",
+    "CreatedAt": "2025-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "IsDeleted": false
+  }
+]
