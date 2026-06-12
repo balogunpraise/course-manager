@@ -1,0 +1,97 @@
+﻿using Core.Application.Dtos.Requests;
+using Core.Application.Interfaces.ServicesAbstractions;
+using Core.Domain.Entities;
+using Core.Domain.Enums;
+using Infrastructure.data;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Services
+{
+    public class ScheduleService : IScheduleService
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly ScheduleConflictChecker _conflictChecker;
+
+        public ScheduleService(ApplicationDbContext context, ScheduleConflictChecker conflictChecker)
+        {
+            _context = context;
+            _conflictChecker = conflictChecker;
+        }
+
+        public async Task<Schedule> CreateScheduleAsync(CreateScheduleDto dto)
+        {
+            // Validate course exists
+            var course = await _context.Courses.FindAsync(dto.CourseId);
+            if (course == null)
+                throw new Exception("Course not found");
+
+            // Validate lecturer exists
+            var lecturer = await _context.Lecturers.FindAsync(dto.LecturerId);
+            if (lecturer == null)
+                throw new Exception("Lecturer not found");
+
+            // Validate classroom exists
+            var classroom = await _context.Classrooms.FindAsync(dto.ClassroomId);
+            if (classroom == null)
+                throw new Exception("Classroom not found");
+
+            // Check lecturer course load
+            if (!_conflictChecker.LecturerHasCourseLoadCapacity(dto.LecturerId, dto.Semester, dto.AcademicSession))
+                throw new Exception("Lecturer has exceeded maximum course load for this session");
+
+            var schedule = new Schedule
+            {
+                CourseId = dto.CourseId,
+                LecturerId = dto.LecturerId,
+                ClassroomId = dto.ClassroomId,
+                Day = dto.Day,
+                StartTime = dto.StartTime,
+                EndTime = dto.EndTime,
+                Semester = dto.Semester,
+                AcademicSession = dto.AcademicSession,
+                Status = ScheduleStatus.Pending
+            };
+
+            // Check for conflicts
+            var conflicts = _conflictChecker.CheckAllConflicts(schedule);
+            if (!conflicts.IsValid)
+                throw new Exception($"Schedule conflicts: {string.Join(", ", conflicts.Conflicts)}");
+
+            _context.Schedules.Add(schedule);
+            await _context.SaveChangesAsync();
+
+            return schedule;
+        }
+
+        public Task<bool> DeleteScheduleAsync(Guid scheduleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Schedule>> GetClassroomScheduleAsync(Guid classroomId, DayOfWeek? day = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Schedule>> GetLecturerScheduleAsync(Guid lecturerId, int semester, string academicSession)
+        {
+            return await _context.Schedules
+                .Include(s => s.Course)
+                .Include(s => s.Classroom)
+                .Where(s => s.LecturerId == lecturerId &&
+                            s.Semester == semester &&
+                            s.AcademicSession == academicSession &&
+                            !s.IsDeleted)
+                .OrderBy(s => s.Day)
+                .ThenBy(s => s.StartTime)
+                .ToListAsync();
+        }
+
+        public Task<bool> UpdateScheduleAsync(Guid scheduleId, UpdateScheduleDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Implement other methods...
+    }
+}

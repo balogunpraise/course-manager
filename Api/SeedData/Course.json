@@ -6,10 +6,12 @@
     "Description": "Develops communication skills in reading, writing, and oral expression.",
     "CreditHours": 2,
     "IsGeneralStudies": true,
+    "IsElective": false,
+    "RequiredSpecialization": 3,
+    "RequiredQualification": 0,
     "FacultyId": null,
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -19,10 +21,12 @@
     "Description": "Continuation of GST101 with focus on academic writing and critical thinking.",
     "CreditHours": 2,
     "IsGeneralStudies": true,
+    "IsElective": false,
+    "RequiredSpecialization": 3,
+    "RequiredQualification": 0,
     "FacultyId": null,
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -32,10 +36,12 @@
     "Description": "Surveys the history, culture, and diversity of Nigerian peoples.",
     "CreditHours": 2,
     "IsGeneralStudies": true,
+    "IsElective": false,
+    "RequiredSpecialization": 3,
+    "RequiredQualification": 0,
     "FacultyId": null,
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -45,10 +51,12 @@
     "Description": "Introduces students to logical reasoning and fundamental philosophical questions.",
     "CreditHours": 2,
     "IsGeneralStudies": true,
+    "IsElective": false,
+    "RequiredSpecialization": 3,
+    "RequiredQualification": 0,
     "FacultyId": null,
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -58,13 +66,14 @@
     "Description": "Covers the fundamentals of entrepreneurship, business creation, and innovation management.",
     "CreditHours": 2,
     "IsGeneralStudies": true,
+    "IsElective": false,
+    "RequiredSpecialization": 1,
+    "RequiredQualification": 0,
     "FacultyId": null,
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
-
   {
     "Id": "c1d2e3f4-0006-0000-0000-000000000006",
     "CourseCode": "ENG101",
@@ -72,10 +81,12 @@
     "Description": "Covers calculus, algebra, and introductory numerical methods for engineering students.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 8,
+    "RequiredQualification": 1,
     "FacultyId": "a1b2c3d4-0001-0000-0000-000000000001",
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -85,10 +96,12 @@
     "Description": "Introduces technical drawing, orthographic projection, and CAD fundamentals.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 4,
+    "RequiredQualification": 1,
     "FacultyId": "a1b2c3d4-0001-0000-0000-000000000001",
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -98,10 +111,12 @@
     "Description": "Covers fundamental principles of mechanics, thermodynamics, and waves.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 2,
+    "RequiredQualification": 1,
     "FacultyId": "a1b2c3d4-0002-0000-0000-000000000002",
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -111,10 +126,12 @@
     "Description": "Introduces atomic structure, bonding, reactions, and stoichiometry.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 2,
+    "RequiredQualification": 1,
     "FacultyId": "a1b2c3d4-0002-0000-0000-000000000002",
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -124,13 +141,14 @@
     "Description": "Surveys the foundational disciplines of medicine including anatomy and physiology.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 7,
+    "RequiredQualification": 1,
     "FacultyId": "a1b2c3d4-0005-0000-0000-000000000005",
     "DepartmentId": null,
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
-
   {
     "Id": "c1d2e3f4-0011-0000-0000-000000000011",
     "CourseCode": "CVE201",
@@ -138,10 +156,12 @@
     "Description": "Covers analysis of beams, trusses, and frames under various loading conditions.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 4,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0001-0000-0000-000000000001",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -151,10 +171,12 @@
     "Description": "Studies the behavior of fluids at rest and in motion and their engineering applications.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 4,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0001-0000-0000-000000000001",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -164,10 +186,12 @@
     "Description": "Covers arrays, linked lists, trees, sorting, and algorithm complexity analysis.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 5,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0002-0000-0000-000000000002",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -177,10 +201,12 @@
     "Description": "Introduces process management, memory management, file systems, and concurrency.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 5,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0002-0000-0000-000000000002",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -190,10 +216,12 @@
     "Description": "Introduces wave-particle duality, the Schrödinger equation, and quantum states.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 2,
+    "RequiredQualification": 2,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0004-0000-0000-000000000004",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -203,10 +231,12 @@
     "Description": "Covers the structure, nomenclature, and reactions of organic compounds.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 2,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0005-0000-0000-000000000005",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -216,10 +246,12 @@
     "Description": "Studies human growth and psychological development across the lifespan.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 3,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0009-0000-0000-000000000009",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -229,10 +261,12 @@
     "Description": "Analyzes individual markets, consumer behavior, and firm decision-making.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 1,
+    "RequiredQualification": 1,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0010-0000-0000-000000000010",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -242,10 +276,12 @@
     "Description": "Detailed study of the structure of the human body and its organ systems.",
     "CreditHours": 4,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 7,
+    "RequiredQualification": 2,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0011-0000-0000-000000000011",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   },
   {
@@ -255,10 +291,12 @@
     "Description": "Covers drug classifications, mechanisms of action, and therapeutic applications.",
     "CreditHours": 3,
     "IsGeneralStudies": false,
+    "IsElective": false,
+    "RequiredSpecialization": 7,
+    "RequiredQualification": 2,
     "FacultyId": null,
     "DepartmentId": "b1c2d3e4-0012-0000-0000-000000000012",
     "CreatedAt": "2024-01-01T00:00:00Z",
-    "UpdatedAt": null,
     "IsDeleted": false
   }
 ]

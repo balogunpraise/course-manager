@@ -1,4 +1,5 @@
 using Api.ProjectExtensions;
+using Core.Application;
 using Core.Domain.Entities.Auth;
 using Infrastructure.data;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,11 @@ builder.Services.AddControllers();
 builder.Services.RegisterServices();
 builder.Services.RegisterDatabase(builder.Configuration);
 builder.Services.RegisterIdentity();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddMaps(typeof(MappingProfile).Assembly);
+});
 builder.Services.AddCors(option =>
 {
     option.AddPolicy("coursemanager", opt =>

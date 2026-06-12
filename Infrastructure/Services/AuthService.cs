@@ -1,8 +1,10 @@
-﻿using Core.Application.Dtos.Requests;
+﻿using Core.Application.Constants;
+using Core.Application.Dtos.Requests;
 using Core.Application.Dtos.Responses;
 using Core.Application.Helpers;
 using Core.Application.Interfaces.ServicesAbstractions;
 using Core.Domain.Entities.Auth;
+using Core.Domain.Enums;
 using Infrastructure.data;
 using Microsoft.AspNetCore.Identity;
 
@@ -21,7 +23,7 @@ namespace Infrastructure.Services
         private readonly ITokenService _tokenService = tokenService;
 
 
-        public async Task<BaseResponse<Guid>> RegisterUserAsync(CreateUserRequest request)
+        public async Task<BaseResponse<Guid>> RegisterUserAsync(CreateUserRequest request, UserType userType = UserType.Student)
         {
             var useEmailExists = await _userManager.FindByEmailAsync(request.Email.Trim());
             if (useEmailExists != null)
@@ -33,13 +35,14 @@ namespace Infrastructure.Services
                 UserName = string.IsNullOrWhiteSpace(request.UserName) ? request.Email.Trim() : request.UserName.Trim(),
                 Email = request.Email.Trim(),
                 FirstName = request.FirstName.Trim(),
-                LastName = request.LastName.Trim()
+                LastName = request.LastName.Trim(),
+                PhoneNumber = request.PhoneNumber.Trim()
             };
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
                 // Assign default role to the user
-                var defaultRole = "Student"; // You can change this to your desired default role
+                var defaultRole = GetDefaultRoleForUserType(userType); // You can change this to your desired default role
                 if (!await _roleManager.RoleExistsAsync(defaultRole))
                 {
                     await _roleManager.CreateAsync(new AppRole { Name = defaultRole });
@@ -105,6 +108,17 @@ namespace Infrastructure.Services
                 return BaseResponse.Success(200, "User account deleted successfully");
             }
             return BaseResponse.Failure(400, "Failed to delete user account", result.Errors.Select(e => e.Description).ToList());
+        }
+
+        private string GetDefaultRoleForUserType(UserType userType)
+        {
+            return userType switch
+            {
+                UserType.Student => RoleConstants.Student,
+                UserType.Lecturer => RoleConstants.Lecturer,
+                UserType.Admin => RoleConstants.Admin,
+                _ => RoleConstants.Student
+            };
         }
     }
 }

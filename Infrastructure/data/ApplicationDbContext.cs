@@ -3,6 +3,7 @@ using Core.Domain.Entities.Auth;
 using Core.Domain.Entities.LinkingEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Infrastructure.data
 {
@@ -35,6 +36,25 @@ namespace Infrastructure.data
 
             });
 
+            builder.Entity<LecturerCourse>(entity =>
+            {
+                entity.HasKey(lc => lc.Id);
+                entity.HasIndex(lc => new { lc.LecturerId, lc.CourseId }).IsUnique();
+
+
+                entity.HasOne(lc => lc.Lecturer)
+                    .WithMany(lc => lc.LecturerCourses)
+                    .HasForeignKey(lc => lc.LecturerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(lc => lc.Course)
+                    .WithMany(lc => lc.LecturerCourses)
+                    .HasForeignKey(lc => lc.CourseId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+
+            });
+
             builder.Entity<CourseActivity>(entity =>
             {
                 entity.HasOne(ca => ca.StudentCourse)
@@ -42,6 +62,14 @@ namespace Infrastructure.data
                     .HasForeignKey(ca => ca.StudentCourseId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            builder.Entity<Schedule>()
+                .HasIndex(s => new { s.LecturerId, s.Day, s.StartTime, s.Semester })
+                .HasDatabaseName("IX_Schedule_Lecturer_Time");
+
+            builder.Entity<Schedule>()
+                .HasIndex(s => new { s.ClassroomId, s.Day, s.StartTime, s.Semester })
+                .HasDatabaseName("IX_Schedule_Classroom_Time");
 
         }
 
@@ -55,6 +83,13 @@ namespace Infrastructure.data
         public DbSet<Waitlist> Waitlists { get; set; }
         public DbSet<Level> Levels { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<LecturerCourse> LecturerCourses { get; set; }
+        public DbSet<Lecturer> Lecturers { get; set; }
+        public DbSet<PreferedLevel> PreferredLevels { get; set; }
+        public DbSet<PreferedCourse> PreferedCourses { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<LecturerAvailability> LecturerAvailabilities { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
     }
 }

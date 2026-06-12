@@ -117,6 +117,19 @@ namespace Infrastructure.data
             }
         }
 
+        public static async Task DeleteCourse(ApplicationDbContext context)
+        {
+            if(context.Courses.Any())
+            {
+                var courses = await context.Courses.ToListAsync();
+                if (courses != null && courses.Any())
+                {
+                    context.Courses.RemoveRange(courses);
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
         public static async Task SeedLevels(ApplicationDbContext context)
         {
             if (!context.Levels.Any())

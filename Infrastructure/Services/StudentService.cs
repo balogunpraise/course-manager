@@ -28,7 +28,7 @@ namespace Infrastructure.Services
                 Email = request.Email,
                 Password = "DefaultPassword123!"
             };
-            var creatUserResponse = await _authService.RegisterUserAsync(createUserRequest);
+            var creatUserResponse = await _authService.RegisterUserAsync(createUserRequest, UserType.Student);
             if (creatUserResponse == null || !creatUserResponse.Succeeded) return BaseResponse.Failure(500, "Failed to create user for student");
             var userId = creatUserResponse.Data;
 
