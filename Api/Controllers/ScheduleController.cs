@@ -142,24 +142,19 @@ namespace Api.Controllers
 
         // POST: api/schedule
         [HttpPost]
-        public async Task<ActionResult<ScheduleDto>> CreateSchedule(CreateScheduleDto createDto)
+        [ProducesResponseType(typeof(BaseResponse<ScheduleResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse<ScheduleResponseDto>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreateSchedule(CreateScheduleDto createDto)
         {
-            try
-            {
-                var schedule = await _scheduleService.CreateScheduleAsync(createDto);
-                return CreatedAtAction(nameof(GetSchedule), new { id = schedule.Id }, _mapper.Map<ScheduleDto>(schedule));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            var schedule = await _scheduleService.CreateScheduleAsync(createDto);
+            return Ok(schedule);
         }
 
         // PUT: api/schedule/{id}
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateSchedule(Guid id, UpdateScheduleDto updateDto)
+        public async Task<ActionResult> UpdateSchedule(Guid id, UpdateScheduleDto updateDto)
         {
             try
             {
