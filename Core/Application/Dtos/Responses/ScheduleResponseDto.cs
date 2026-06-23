@@ -15,6 +15,6 @@ namespace Core.Application.Dtos.Responses
         public TimeOnly EndTime { get; set; }
         public ScheduleStatus Status { get; set; }
         public string AcademicSession { get; set; }
-        public int Semester { get; set; }
+        public Semester Semester { get; set; }
     }
 }

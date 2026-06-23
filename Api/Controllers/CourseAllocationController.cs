@@ -32,6 +32,16 @@ namespace Api.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpGet("assigned-courses")]
+        [ProducesResponseType(typeof(BaseResponse<List<AllocatedCourseResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetSelfCourseAllocation()
+        {
+            var userId = LoggedInUserId();
+            var response = await _allocationService.LecturerGetAssignedCourses(userId);
+            return StatusCode(response.StatusCode, response);
+        }
+
         /// <summary>Reassigns a course from one lecturer to another</summary>
         [HttpPatch("reassign")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]

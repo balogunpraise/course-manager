@@ -128,7 +128,7 @@ namespace Infrastructure.Services
         }
 
         // Check course load for lecturer
-        public bool LecturerHasCourseLoadCapacity(Guid lecturerId, int semester, string academicSession)
+        public bool LecturerHasCourseLoadCapacity(Guid lecturerId, Semester semester, string academicSession)
         {
             var lecturer = _context.Lecturers.Find(lecturerId);
             if (lecturer == null) return false;

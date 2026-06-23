@@ -20,11 +20,99 @@ namespace Infrastructure.Services
             _context = context;
         }
 
+        //public async Task<BaseResponse> AllocateCoursesManually(ManualCourseAllocationRequest request)
+        //{
+        //    var errors = new List<string>();
+
+        //    // 1. Validate lecturer (single query with courses already allocated)
+        //    var lecturer = await _context.Lecturers
+        //        .Include(l => l.LecturerCourses)
+        //        .FirstOrDefaultAsync(l => l.Id == request.LecturerId && !l.IsDeleted);
+
+        //    if (lecturer == null)
+        //        return BaseResponse.Failure(404, "Lecturer not found");
+
+        //    if (!lecturer.IsAvailable)
+        //        return BaseResponse.Failure(400, "Lecturer is currently unavailable for course allocation");
+
+        //    // 2. Fetch all requested courses in one query
+        //    var courses = await _context.Courses
+        //        .Where(c => request.CourseIds.Contains(c.Id) && !c.IsDeleted)
+        //        .ToListAsync();
+
+        //    // Check all courses exist
+        //    if (courses.Count != request.CourseIds.Count)
+        //    {
+        //        var foundIds = courses.Select(c => c.Id).ToHashSet();
+        //        var missingIds = request.CourseIds.Where(id => !foundIds.Contains(id));
+        //        return BaseResponse.Failure(404, "One or more courses not found",
+        //            missingIds.Select(id => $"Course {id} not found").ToList());
+        //    }
+
+        //    // 3. Get already-allocated course IDs for this lecturer (avoid N+1)
+        //    var alreadyAllocatedCourseIds = lecturer.LecturerCourses
+        //        .Select(lc => lc.CourseId)
+        //        .ToHashSet();
+
+        //    // 4. Filter to only new courses
+        //    var newCourses = courses
+        //        .Where(c => !alreadyAllocatedCourseIds.Contains(c.Id))
+        //        .ToList();
+
+        //    if (newCourses.Count == 0)
+        //        return BaseResponse.Failure(400, "All selected courses are already allocated to this lecturer");
+
+        //    // 5. Validate each course against lecturer profile
+        //    foreach (var course in newCourses)
+        //    {
+        //        if (course.RequiredSpecialization != lecturer.Specialization)
+        //            errors.Add($"[{course.CourseCode}] Specialization mismatch — requires {course.RequiredSpecialization}, lecturer has {lecturer.Specialization}");
+
+        //        if (course.RequiredQualification > lecturer.Qualification)
+        //            errors.Add($"[{course.CourseCode}] Qualification too low — requires {course.RequiredQualification}, lecturer has {lecturer.Qualification}");
+        //    }
+
+        //    if (errors.Any())
+        //        return BaseResponse.Failure(400, "One or more courses failed validation", errors);
+
+        //    // 6. Workload check
+        //    int currentLoad = lecturer.LecturerCourses.Count;
+        //    int projectedLoad = currentLoad + newCourses.Count;
+
+        //    if (projectedLoad > lecturer.MaxCourseLoad)
+        //        return BaseResponse.Failure(400,
+        //            $"Allocation exceeds lecturer's max course load. " +
+        //            $"Current: {currentLoad}, Requested: {newCourses.Count}, Max: {lecturer.MaxCourseLoad}");
+
+        //    // 7. Bulk insert new allocations
+        //    var allocations = newCourses.Select(course => new LecturerCourse
+        //    {
+        //        LecturerId = request.LecturerId,
+        //        CourseId = course.Id
+        //    }).ToList();
+
+        //    await _context.LecturerCourses.AddRangeAsync(allocations);
+        //    await _context.SaveChangesAsync();
+
+        //    return BaseResponse.Success(200,
+        //        $"{newCourses.Count} course(s) successfully allocated to {lecturer.FirstName} {lecturer.LastName}");
+        //}
+
         public async Task<BaseResponse> AllocateCoursesManually(ManualCourseAllocationRequest request)
         {
             var errors = new List<string>();
 
-            // 1. Validate lecturer (single query with courses already allocated)
+            // 1. Guard against duplicate entries within the request itself
+            var duplicatesInRequest = request.Allocations
+                .GroupBy(a => (a.CourseId, a.LevelId, a.DepartmentId))
+                .Where(g => g.Count() > 1)
+                .Select(g => $"Course {g.Key.CourseId} is duplicated in the request for Level {g.Key.LevelId} / Department {g.Key.DepartmentId}")
+                ?.ToList();
+
+            if (duplicatesInRequest.Any())
+                return BaseResponse.Failure(400, "Request contains duplicate allocations", duplicatesInRequest);
+
+            // 2. Validate lecturer
             var lecturer = await _context.Lecturers
                 .Include(l => l.LecturerCourses)
                 .FirstOrDefaultAsync(l => l.Id == request.LecturerId && !l.IsDeleted);
@@ -35,36 +123,43 @@ namespace Infrastructure.Services
             if (!lecturer.IsAvailable)
                 return BaseResponse.Failure(400, "Lecturer is currently unavailable for course allocation");
 
-            // 2. Fetch all requested courses in one query
+            // 3. Fetch all requested courses in one query
+            var requestedCourseIds = request.Allocations.Select(a => a.CourseId).ToList();
+
             var courses = await _context.Courses
-                .Where(c => request.CourseIds.Contains(c.Id) && !c.IsDeleted)
+                .Where(c => requestedCourseIds.Contains(c.Id) && !c.IsDeleted)
                 .ToListAsync();
 
-            // Check all courses exist
-            if (courses.Count != request.CourseIds.Count)
+            // 4. Check all courses exist
+            if (courses.Count != requestedCourseIds.Count)
             {
                 var foundIds = courses.Select(c => c.Id).ToHashSet();
-                var missingIds = request.CourseIds.Where(id => !foundIds.Contains(id));
+                var missingIds = requestedCourseIds.Where(id => !foundIds.Contains(id));
                 return BaseResponse.Failure(404, "One or more courses not found",
                     missingIds.Select(id => $"Course {id} not found").ToList());
             }
 
-            // 3. Get already-allocated course IDs for this lecturer (avoid N+1)
-            var alreadyAllocatedCourseIds = lecturer.LecturerCourses
-                .Select(lc => lc.CourseId)
+            // 5. Build a lookup for quick access during validation
+            var courseLookup = courses.ToDictionary(c => c.Id);
+
+            // 6. Get already-allocated (course, level, department) combinations for this lecturer
+            var alreadyAllocated = lecturer.LecturerCourses
+                .Select(lc => (lc.CourseId, lc.LevelId, lc.DepartmentId))
                 .ToHashSet();
 
-            // 4. Filter to only new courses
-            var newCourses = courses
-                .Where(c => !alreadyAllocatedCourseIds.Contains(c.Id))
+            // 7. Filter to only new allocations
+            var newAllocations = request.Allocations
+                .Where(a => !alreadyAllocated.Contains((a.CourseId, a.LevelId, a.DepartmentId)))
                 .ToList();
 
-            if (newCourses.Count == 0)
+            if (newAllocations.Count == 0)
                 return BaseResponse.Failure(400, "All selected courses are already allocated to this lecturer");
 
-            // 5. Validate each course against lecturer profile
-            foreach (var course in newCourses)
+            // 8. Validate each new allocation against lecturer profile
+            foreach (var allocation in newAllocations)
             {
+                var course = courseLookup[allocation.CourseId];
+
                 if (course.RequiredSpecialization != lecturer.Specialization)
                     errors.Add($"[{course.CourseCode}] Specialization mismatch — requires {course.RequiredSpecialization}, lecturer has {lecturer.Specialization}");
 
@@ -75,29 +170,37 @@ namespace Infrastructure.Services
             if (errors.Any())
                 return BaseResponse.Failure(400, "One or more courses failed validation", errors);
 
-            // 6. Workload check
+            // 9. Workload check
             int currentLoad = lecturer.LecturerCourses.Count;
-            int projectedLoad = currentLoad + newCourses.Count;
+            int projectedLoad = currentLoad + newAllocations.Count;
 
             if (projectedLoad > lecturer.MaxCourseLoad)
                 return BaseResponse.Failure(400,
                     $"Allocation exceeds lecturer's max course load. " +
-                    $"Current: {currentLoad}, Requested: {newCourses.Count}, Max: {lecturer.MaxCourseLoad}");
+                    $"Current: {currentLoad}, Requested: {newAllocations.Count}, Max: {lecturer.MaxCourseLoad}");
 
-            // 7. Bulk insert new allocations
-            var allocations = newCourses.Select(course => new LecturerCourse
+            // 10. Bulk insert new allocations
+            var lecturerCourses = newAllocations.Select(a => new LecturerCourse
             {
                 LecturerId = request.LecturerId,
-                CourseId = course.Id
+                CourseId = a.CourseId,
+                LevelId = a.LevelId,
+                DepartmentId = a.DepartmentId
             }).ToList();
 
-            await _context.LecturerCourses.AddRangeAsync(allocations);
+            await _context.LecturerCourses.AddRangeAsync(lecturerCourses);
             await _context.SaveChangesAsync();
 
             return BaseResponse.Success(200,
-                $"{newCourses.Count} course(s) successfully allocated to {lecturer.FirstName} {lecturer.LastName}");
+                $"{newAllocations.Count} course(s) successfully allocated to {lecturer.FirstName} {lecturer.LastName}");
         }
 
+        public async Task<BaseResponse<List<AllocatedCourseResponse>>> LecturerGetAssignedCourses(Guid userId)
+        {
+            var lecturer = await _context.Lecturers.SingleOrDefaultAsync(x => x.UserId == userId);
+            if (lecturer == null) return BaseResponse<List<AllocatedCourseResponse>>.Failure(404, "Lecturer Not Found");
+            return await GetLecturerAllocatedCourses(lecturer.Id);
+        }
 
         public async Task<BaseResponse<List<AllocatedCourseResponse>>> GetLecturerAllocatedCourses(Guid lecturerId)
         {
@@ -110,9 +213,10 @@ namespace Infrastructure.Services
             var allocatedCourses = await _context.LecturerCourses
                 .Where(lc => lc.LecturerId == lecturerId)
                 .Include(lc => lc.Course)
-                    .ThenInclude(c => c.Department)
+                .Include(c => c.Department)
                 .Include(lc => lc.Course)
                     .ThenInclude(c => c.Faculty)
+                .Include(c => c.Level)
                 .Select(lc => new AllocatedCourseResponse
                 {
                     CourseId = lc.Course.Id,
@@ -120,12 +224,12 @@ namespace Infrastructure.Services
                     Title = lc.Course.Title,
                     Description = lc.Course.Description,
                     CreditHours = lc.Course.CreditHours,
-                    Level = lc.Course.Level,
+                    Level = lc.Level.LevelCode,
                     IsElective = lc.Course.IsElective,
                     IsGeneralStudies = lc.Course.IsGeneralStudies,
                     RequiredQualification = lc.Course.RequiredQualification,
                     RequiredSpecialization = lc.Course.RequiredSpecialization,
-                    Department = lc.Course.Department.Name,
+                    Department = lc.Department.Name,
                     Faculty = lc.Course.Faculty.Name,
                     AllocatedOn = lc.CreatedAt
                 })

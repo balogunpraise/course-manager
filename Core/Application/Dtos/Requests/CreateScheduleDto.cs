@@ -11,7 +11,8 @@ namespace Core.Application.Dtos.Requests
         public DayOfWeek Day { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
-        public int Semester { get; set; }
+        public Semester Semester { get; set; }
+        public Guid AcademicSessionId { get; set; }
         public string AcademicSession { get; set; }
     }
 

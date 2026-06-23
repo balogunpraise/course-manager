@@ -72,6 +72,7 @@ namespace Api.Controllers
         {
             var classroom = _mapper.Map<Classroom>(createDto);
             classroom.Id = Guid.NewGuid();
+            classroom.IsAvailable = true;
 
             _context.Classrooms.Add(classroom);
             await _context.SaveChangesAsync();

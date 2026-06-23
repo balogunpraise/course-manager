@@ -39,6 +39,7 @@ namespace Api.ProjectExtensions
             services.AddScoped<ICourseAllocationService, CourseAllocationService>();
             services.AddScoped<ScheduleConflictChecker>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<ISemesterService, SemesterService>();
             return services;
         }
 

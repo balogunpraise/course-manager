@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260612125301_ScheduleMigration")]
-    partial class ScheduleMigration
+    [Migration("20260623102559_SessionMigration")]
+    partial class SessionMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,29 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Core.Domain.Entities.AcademicSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SessionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AcademicSessions");
+                });
 
             modelBuilder.Entity("Core.Domain.Entities.Auth.AppRole", b =>
                 {
@@ -507,10 +530,16 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("LecturerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LevelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -519,6 +548,10 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("LevelId");
 
                     b.HasIndex("LecturerId", "CourseId")
                         .IsUnique();
@@ -635,6 +668,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("AcademicSession")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("AcademicSessionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ClassroomId")
                         .HasColumnType("uniqueidentifier");
 
@@ -669,6 +705,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcademicSessionId");
 
                     b.HasIndex("CourseId");
 
@@ -993,15 +1031,31 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Core.Domain.Entities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Core.Domain.Entities.Lecturer", "Lecturer")
                         .WithMany("LecturerCourses")
                         .HasForeignKey("LecturerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Core.Domain.Entities.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Course");
 
+                    b.Navigation("Department");
+
                     b.Navigation("Lecturer");
+
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.LinkingEntities.PreferedCourse", b =>
@@ -1063,6 +1117,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Domain.Entities.Schedule", b =>
                 {
+                    b.HasOne("Core.Domain.Entities.AcademicSession", "Session")
+                        .WithMany()
+                        .HasForeignKey("AcademicSessionId");
+
                     b.HasOne("Core.Domain.Entities.Classroom", "Classroom")
                         .WithMany("Schedules")
                         .HasForeignKey("ClassroomId")
@@ -1086,6 +1144,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Lecturer");
+
+                    b.Navigation("Session");
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.Student", b =>

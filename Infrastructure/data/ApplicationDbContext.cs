@@ -52,6 +52,15 @@ namespace Infrastructure.data
                     .HasForeignKey(lc => lc.CourseId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+                entity.HasOne(lc => lc.Level)
+                   .WithMany()
+                   .HasForeignKey(lc => lc.LevelId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(lc => lc.Department)
+                    .WithMany()
+                    .HasForeignKey(lc => lc.DepartmentId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
             });
 
@@ -90,6 +99,7 @@ namespace Infrastructure.data
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<LecturerAvailability> LecturerAvailabilities { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<AcademicSession> AcademicSessions { get; set; }
 
     }
 }

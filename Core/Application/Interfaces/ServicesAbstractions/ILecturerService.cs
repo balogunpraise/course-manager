@@ -9,6 +9,7 @@ namespace Core.Application.Interfaces.ServicesAbstractions
         Task<BaseResponse> CreateLecturerAsync(CreateLecturerRequest request);
         Task<BaseResponse<LecturerResponse>> GetLecturerByIdAsync(Guid lecturerId);
         Task<BaseResponse<PagedList<LecturerResponse>>> GetAllLecturersAsync(RequestParams request);
+        Task<Guid?> GetLecturerId(Guid userId);
         Task<BaseResponse> UpdateLecturerAsync(Guid lecturerId, UpdateLecturerRequest request);
         Task<BaseResponse> ToggleLecturerAvailabilityAsync(Guid lecturerId);
         Task<BaseResponse> DeleteLecturerAsync(Guid lecturerId);

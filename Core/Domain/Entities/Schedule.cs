@@ -1,8 +1,5 @@
 ﻿using Core.Domain.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Core.Domain.Entities
 {
@@ -24,7 +21,10 @@ namespace Core.Domain.Entities
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public ScheduleStatus Status { get; set; } 
+        public Semester Semester { get; set; }
         public string AcademicSession { get; set; }  
-        public int Semester { get; set; }            
+        public Guid? AcademicSessionId { get; set; }
+        [ForeignKey(nameof(AcademicSessionId))]
+        public AcademicSession Session { get; set; }
     }
 }

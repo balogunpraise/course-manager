@@ -108,7 +108,11 @@ namespace Infrastructure.Services
             return BaseResponse.Success(201, "Lecturer created successfully");
         }
 
-
+        public async Task<Guid?> GetLecturerId(Guid userId)
+        {
+            var lecturerId = await _context.Lecturers.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            return lecturerId?.Id;
+        }
 
         public async Task<BaseResponse<LecturerResponse>> GetLecturerByIdAsync(Guid lecturerId)
         {

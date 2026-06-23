@@ -50,7 +50,8 @@ namespace Infrastructure.Services
                 EndTime = dto.EndTime,
                 Semester = dto.Semester,
                 AcademicSession = dto.AcademicSession,
-                Status = ScheduleStatus.Pending
+                AcademicSessionId = dto.AcademicSessionId,
+                Status = ScheduleStatus.Approved
             };
 
             // Check for conflicts
@@ -89,14 +90,14 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<Schedule>> GetLecturerScheduleAsync(Guid lecturerId, int semester, string academicSession)
+        public async Task<List<Schedule>> GetLecturerScheduleAsync(Guid lecturerId, Semester semester, Guid academicSessionId)
         {
             return await _context.Schedules
                 .Include(s => s.Course)
                 .Include(s => s.Classroom)
                 .Where(s => s.LecturerId == lecturerId &&
                             s.Semester == semester &&
-                            s.AcademicSession == academicSession &&
+                            s.AcademicSessionId == academicSessionId &&
                             !s.IsDeleted)
                 .OrderBy(s => s.Day)
                 .ThenBy(s => s.StartTime)

@@ -10,6 +10,7 @@ namespace Core.Application.Interfaces.ServicesAbstractions
         Task<BaseResponse<List<AllocatedCourseResponse>>> GetLecturerAllocatedCourses(Guid lecturerId);
         Task<BaseResponse> BulkRemoveCoursesFromLecturer(RemoveCoursesBulkRequest request);
         Task<BaseResponse> RemoveCoursesFromLecturer(RemoveCoursesBulkRequest request);
+        Task<BaseResponse<List<AllocatedCourseResponse>>> LecturerGetAssignedCourses(Guid userId);
 
     }
 }
